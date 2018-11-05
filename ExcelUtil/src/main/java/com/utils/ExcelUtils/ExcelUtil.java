@@ -17,13 +17,18 @@ public class ExcelUtil {
                 Sheet sheet = workbook.getSheetAt(i);
                 int physicalNumberOfRows = sheet.getPhysicalNumberOfRows();
                 int lastRowNum = sheet.getLastRowNum();
-                 for(int j=0;i<lastRowNum;i++){
+                 for(int j=0;j<lastRowNum;j++){
                      Row row = sheet.getRow(j);
                      if(row==null){
+                         log.info("行数：{}为空",j);
                          continue;
                      }
                      for(int n=0;n<row.getLastCellNum();n++){
                          Cell cell = row.getCell(n);
+                         if (cell==null){
+                             log.info("行数：{}cell：{}为空",j,n);
+                             continue;
+                         }
                          cell.setCellType(Cell.CELL_TYPE_STRING);
                          String stringCellValue = cell.getStringCellValue();
                           /*
