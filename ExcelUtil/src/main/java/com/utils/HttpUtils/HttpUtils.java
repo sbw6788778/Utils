@@ -3,7 +3,6 @@ package com.utils.HttpUtils;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
-import com.utils.ExcelUtils.ExcelUtil;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.HttpRequestRetryHandler;
@@ -22,11 +21,10 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.charset.Charset;
-import java.util.Collections;
 import java.util.List;
 
 public class HttpUtils {
-    private static final Logger log = LoggerFactory.getLogger(ExcelUtil.class);
+    private static final Logger log = LoggerFactory.getLogger(HttpUtils.class);
     private static HttpClient client = getHttpClient();
 
     public static HttpClient getHttpClient() {
