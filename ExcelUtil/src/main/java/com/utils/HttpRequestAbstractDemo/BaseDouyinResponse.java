@@ -1,6 +1,5 @@
 package com.utils.HttpRequestAbstractDemo;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -11,7 +10,6 @@ import java.io.Serializable;
  * @author chenlongjs
  */
 @Data
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class BaseDouyinResponse implements Serializable {
     private String err_no;
     private String message;

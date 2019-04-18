@@ -1,6 +1,5 @@
 package com.utils.HttpRequestAbstractDemo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.Data;
@@ -25,7 +24,6 @@ public class BaseDouyinRequest implements Serializable {
     private String timestamp = fmt.format(new Date());
     protected String param_json = "{}";
 
-    @JsonIgnore
     public Map<String, String> getParams() {
         Map<String, String> result = Maps.newTreeMap();
         List<Field> fields = Lists.newArrayList(this.getClass().getSuperclass().getDeclaredFields());
