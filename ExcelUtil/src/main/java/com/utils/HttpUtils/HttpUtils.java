@@ -33,6 +33,7 @@ public class HttpUtils {
         manager.setMaxTotal(2);
         manager.setDefaultMaxPerRoute(1);
         final RequestConfig requestConfig = RequestConfig.custom()
+                .setConnectionRequestTimeout(3000)
                 .setSocketTimeout(5000)
                 .setConnectTimeout(30000).build();
         HttpRequestRetryHandler handler = new HttpRequestRetryHandler() {
