@@ -25,6 +25,7 @@ import java.util.List;
 
 public class HttpUtils {
     private static final Logger log = LoggerFactory.getLogger(HttpUtils.class);
+
     private static HttpClient client = getHttpClient();
 
     public static HttpClient getHttpClient() {
@@ -32,7 +33,7 @@ public class HttpUtils {
         manager.setMaxTotal(2);
         manager.setDefaultMaxPerRoute(1);
         final RequestConfig requestConfig = RequestConfig.custom()
-                .setSocketTimeout(3000)
+                .setSocketTimeout(5000)
                 .setConnectTimeout(30000).build();
         HttpRequestRetryHandler handler = new HttpRequestRetryHandler() {
             public boolean retryRequest(IOException exception, int executionCount, HttpContext context) {
@@ -97,7 +98,7 @@ public class HttpUtils {
             bis.close();
             inputStream.close();
         } catch (Exception e) {
-            log.error("创建post参数实体异常", e);
+            log.error("get error:", e);
         }
         return result;
     }
@@ -107,20 +108,25 @@ public class HttpUtils {
         System.out.println(getPageHtmlbyPost("http://10.4.56.235/priceapi/query/json/v2/inner/all", "{\"pids\":[25152802],\"units\":[\"1_1\",\"2_1\"]}"));
     }
 
+    @Test
+    public void testTimeOut() {
+        System.out.println(getPageHtmlbyGet("http://localhost:8080/test/socket_timeout"));
+    }
+
     public static void main(String[] args) throws Exception {
         List<String> list = readFile();
         String url = "http://10.4.96.36:8500/index/deleteProductInfo?";
         List<List<String>> partitions = Lists.partition(list, 10);
-        int i=0;
-        log.info("size:{}",partitions.size());
+        int i = 0;
+        log.info("size:{}", partitions.size());
         for (List<String> partition : partitions) {
-            log.info("在处理第{}个",i++);
+            log.info("在处理第{}个", i++);
             StringBuffer productIds = new StringBuffer();
             StringBuffer barCodes = new StringBuffer();
             partition.stream().forEach(e -> {
                 List<String> list1 = Splitter.on(",").omitEmptyStrings().splitToList(e);
-                if (list1.size()!=2){
-                    log.info("缺少东西:{}",e);
+                if (list1.size() != 2) {
+                    log.info("缺少东西:{}", e);
                     return;
                 }
                 productIds.append(list1.get(0));
@@ -128,16 +134,16 @@ public class HttpUtils {
                 barCodes.append(list1.get(1));
                 barCodes.append(",");
             });
-            if (productIds.length()==0||barCodes.length()==0){
+            if (productIds.length() == 0 || barCodes.length() == 0) {
                 continue;
             }
-            productIds.deleteCharAt(productIds.length()-1);
-            barCodes.deleteCharAt(barCodes.length()-1);
-            String get=url+"productIds="+productIds+"&barCodes="+barCodes;
+            productIds.deleteCharAt(productIds.length() - 1);
+            barCodes.deleteCharAt(barCodes.length() - 1);
+            String get = url + "productIds=" + productIds + "&barCodes=" + barCodes;
             String res = getPageHtmlbyGet(get);
-            if (res.equals("ok")){
+            if (res.equals("ok")) {
                 log.info("成功");
-            }else{
+            } else {
                 log.info(get);
             }
         }

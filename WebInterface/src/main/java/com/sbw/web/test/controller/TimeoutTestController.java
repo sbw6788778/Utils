@@ -1,6 +1,6 @@
 package com.sbw.web.test.controller;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -18,12 +18,11 @@ import java.io.IOException;
  *
  * @author
  */
+@Slf4j
 @Controller
-@EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
+@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class})
 @RequestMapping(value = {"/test"}, method = {RequestMethod.GET})
 public class TimeoutTestController {
-
-    private static final Logger logger = LoggerFactory.getLogger(TimeoutTestController.class);
 
     /**
      * main方法
@@ -43,7 +42,7 @@ public class TimeoutTestController {
     @RequestMapping(value = {"/socket_timeout"}, method = {RequestMethod.GET})
     @ResponseBody
     String socketTimeout() throws InterruptedException {
-        logger.info("socket_timeout");
+        log.info("socket_timeout");
         Thread.sleep(3000);
         return "socket_timeout";
     }
@@ -56,9 +55,9 @@ public class TimeoutTestController {
      */
     @RequestMapping(value = {"/socket_timeout_2"}, method = {RequestMethod.GET})
     void socketTimeout2(HttpServletResponse response) throws InterruptedException, IOException {
-        logger.info("socket_timeout_2");
+        log.info("socket_timeout_2");
         for (int i = 0; i < 10; i++) {
-            logger.info("{}", i);
+            log.info("{}", i);
             response.getWriter().println("" + i);
             response.flushBuffer();
             Thread.sleep(800);
@@ -75,7 +74,7 @@ public class TimeoutTestController {
     @RequestMapping(value = {"/connection_request_timeout"}, method = {RequestMethod.GET})
     @ResponseBody
     String connectionRequestTimeout(HttpServletRequest request) throws InterruptedException {
-        logger.info("{}", request.getRequestURI());
+        log.info("{}", request.getRequestURI());
         Thread.sleep(3000);
         return "connectionRequestTimeout";
     }
