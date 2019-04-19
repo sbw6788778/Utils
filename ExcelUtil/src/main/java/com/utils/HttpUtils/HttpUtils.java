@@ -3,6 +3,7 @@ package com.utils.HttpUtils;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.HttpRequestRetryHandler;
@@ -15,16 +16,20 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.ByteArrayBuffer;
+import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.List;
 
+@Slf4j
 public class HttpUtils {
-    private static final Logger log = LoggerFactory.getLogger(HttpUtils.class);
+
 
     private static HttpClient client = getHttpClient();
 
@@ -107,6 +112,11 @@ public class HttpUtils {
     @Test
     public void testPost() {
         System.out.println(getPageHtmlbyPost("http://10.4.56.235/priceapi/query/json/v2/inner/all", "{\"pids\":[25152802],\"units\":[\"1_1\",\"2_1\"]}"));
+    }
+
+    @Before
+    public void init() {
+        ClassPathXmlApplicationContext c = new ClassPathXmlApplicationContext("classpath:spring.xml");
     }
 
     @Test
