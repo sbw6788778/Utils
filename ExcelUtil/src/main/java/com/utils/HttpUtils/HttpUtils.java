@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.concurrent.*;
 
 @Slf4j
 public class HttpUtils {
@@ -121,54 +122,78 @@ public class HttpUtils {
 
     @Test
     public void testTimeOut() {
-        System.out.println(getPageHtmlbyGet("http://localhost:8080/test/socket_timeout"));
+        ExecutorService executorService = new ThreadPoolExecutor(20, 20, 0,
+                TimeUnit.MILLISECONDS,
+                new LinkedBlockingQueue<>(100000),
+                new ThreadPoolExecutor.AbortPolicy());
+        while (true){
+            try {
+                Thread.sleep(1);
+                executorService.execute(()->System.out.println(getPageHtmlbyGet("http://localhost:8080/test/socket_timeout?a="+Thread.currentThread().getName())));
+            }catch (Exception e){
+                e.getStackTrace();
+            }
+
+        }
+
+
     }
 
     public static void main(String[] args) throws Exception {
         List<String> list = readFile();
         String url = "http://10.4.96.36:8500/index/deleteProductInfo?";
         List<List<String>> partitions = Lists.partition(list, 10);
+        ExecutorService executorService = new ThreadPoolExecutor(20, 20, 0,
+                TimeUnit.MILLISECONDS,
+                new LinkedBlockingQueue<>(100000),
+                new ThreadPoolExecutor.AbortPolicy());
         int i = 0;
         log.info("size:{}", partitions.size());
+        CountDownLatch countDownLatch = new CountDownLatch(partitions.size());
         for (List<String> partition : partitions) {
-            log.info("在处理第{}个", i++);
-            StringBuffer productIds = new StringBuffer();
-            StringBuffer barCodes = new StringBuffer();
-            partition.stream().forEach(e -> {
-                List<String> list1 = Splitter.on(",").omitEmptyStrings().splitToList(e);
-                if (list1.size() != 2) {
-                    log.info("缺少东西:{}", e);
-                    return;
+            executorService.execute(() -> {
+                try {
+                    delete(url, partition);
+                }finally {
+                    countDownLatch.countDown();
                 }
-                productIds.append(list1.get(0));
-                productIds.append(",");
-                barCodes.append(list1.get(1));
-                barCodes.append(",");
             });
-            if (productIds.length() == 0 || barCodes.length() == 0) {
-                continue;
-            }
-            productIds.deleteCharAt(productIds.length() - 1);
-            barCodes.deleteCharAt(barCodes.length() - 1);
-            String get = url + "productIds=" + productIds + "&barCodes=" + barCodes;
-            String res = getPageHtmlbyGet(get);
-            if (res.equals("ok")) {
-                log.info("成功");
-            } else {
-                log.info(get);
-            }
         }
+        try {
+            countDownLatch.await();
+        } catch (Exception e) {
+            log.error("countDownLatch.await error", e);
+        }
+        log.info("done");
 
-//        HttpClient client = getHttpClient();
-//        HttpGet request = new HttpGet(url);
-//        try {
-//            HttpResponse response = client.execute(request);
-//            log.info("第一次获取连接成功");
-//            response.getEntity().getContent().close();
-//        } catch (Exception e) {
-//            log.error("error:", e);
-//        }
+    }
 
+    private static void delete(String url, List<String> partition) {
+        StringBuffer productIds = new StringBuffer();
+        StringBuffer barCodes = new StringBuffer();
+        partition.stream().forEach(e -> {
+            List<String> list1 = Splitter.on(",").omitEmptyStrings().splitToList(e);
+            if (list1.size() != 2) {
+                log.info("缺少东西:{}", e);
+                return;
+            }
+            productIds.append(list1.get(0));
+            productIds.append(",");
+            barCodes.append(list1.get(1));
+            barCodes.append(",");
+        });
+        if (productIds.length() == 0 || barCodes.length() == 0) {
+            return;
+        }
+        productIds.deleteCharAt(productIds.length() - 1);
+        barCodes.deleteCharAt(barCodes.length() - 1);
+        String get = url + "productIds=" + productIds + "&barCodes=" + barCodes;
+        String res = getPageHtmlbyGet(get);
+        if (res.equals("ok")) {
+            log.info("成功");
+        } else {
+            log.info(get);
+        }
     }
 
     public static List<String> readFile() {

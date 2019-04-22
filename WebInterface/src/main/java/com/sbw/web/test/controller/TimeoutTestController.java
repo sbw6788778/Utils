@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,6 +21,7 @@ import java.io.IOException;
  */
 @Slf4j
 @Controller
+@Scope("prototype")
 @EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class})
 @RequestMapping(value = {"/test"}, method = {RequestMethod.GET})
 public class TimeoutTestController {
@@ -41,9 +43,9 @@ public class TimeoutTestController {
      */
     @RequestMapping(value = {"/socket_timeout"}, method = {RequestMethod.GET})
     @ResponseBody
-    String socketTimeout() throws InterruptedException {
-        log.info("socket_timeout");
-        Thread.sleep(3000);
+    String socketTimeout(HttpServletRequest request) throws InterruptedException {
+        String parameter = request.getParameter("a");
+        log.info(Thread.currentThread().getId()+"===socket_timeout==="+parameter);
         return "socket_timeout";
     }
 
