@@ -314,5 +314,6 @@
     <modules>
         <module>ExcelUtil</module>
         <module>webInterface</module>
+        <module>simple_web_server</module>
     </modules>
 </project>
