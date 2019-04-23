@@ -1,4 +1,4 @@
-package com.sbw.simple.web.server;
+package com.sbw.simple.web.server.v1;
 
 import java.io.File;
 import java.io.FileInputStream;

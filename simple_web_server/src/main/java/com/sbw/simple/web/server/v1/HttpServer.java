@@ -1,4 +1,4 @@
-package com.sbw.simple.web.server;
+package com.sbw.simple.web.server.v1;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,6 +8,9 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * 简单的获取磁盘中的静态资源
+ */
 public class HttpServer {
 
   /** WEB_ROOT is the directory where our HTML and other files reside.
@@ -17,7 +20,8 @@ public class HttpServer {
    *  from where the java command was invoked.
    */
   public static final String WEB_ROOT =
-    "E:\\" + File.separator  + "webroot";
+          System.getProperty("user.dir") + File.separator + "simple_web_server" + File.separator + "src"
+                  + File.separator + "main" + File.separator + "resources";
 
   // shutdown command
   private static final String SHUTDOWN_COMMAND = "/SHUTDOWN";

@@ -1,4 +1,4 @@
-package com.sbw.simple.web.server;
+package com.sbw.simple.web.server.v1;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,6 +31,11 @@ public class Request {
     uri = parseUri(request.toString());
   }
 
+  /**
+   * 从request的报文中获取uri
+   * @param requestString
+   * @return
+   */
   private String parseUri(String requestString) {
     int index1, index2;
     index1 = requestString.indexOf(' ');
