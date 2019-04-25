@@ -8,6 +8,9 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * 加入了servlet
+ */
 public class HttpServer1{
 
   /** WEB_ROOT is the directory where our HTML and other files reside.

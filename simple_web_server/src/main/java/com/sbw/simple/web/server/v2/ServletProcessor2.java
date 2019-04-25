@@ -21,7 +21,7 @@ public class ServletProcessor2 {
       // create a URLClassLoader
       URL[] urls = new URL[1];
       URLStreamHandler streamHandler = null;
-      File classPath = new File(Constants.WEB_ROOT);
+      File classPath = new File(Constants.SERVLET_ROOT);
       // the forming of repository is taken from the createClassLoader method in
       // org.apache.catalina.startup.ClassLoaderFactory
       String repository = (new URL("file", null, classPath.getCanonicalPath() + File.separator)).toString() ;
