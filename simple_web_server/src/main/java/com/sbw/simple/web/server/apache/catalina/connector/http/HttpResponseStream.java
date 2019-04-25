@@ -64,10 +64,11 @@
 
 package com.sbw.simple.web.server.apache.catalina.connector.http;
 
-import java.io.IOException;
-import javax.servlet.http.HttpServletResponse;
+import com.sbw.simple.web.server.apache.catalina.connector.ResponseStream;
+
 import javax.servlet.http.HttpServletRequest;
-import org.apache.catalina.connector.ResponseStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * Response stream for the HTTP/1.1 connector. This stream will automatically
@@ -134,11 +135,10 @@ public final class HttpResponseStream extends ResponseStream {
      * Write the specified byte to our output stream.
      *
      * @param b The byte to be written
-     *
-     * @exception IOException if an input/output error occurs
+     * @throws IOException if an input/output error occurs
      */
     public void write(int b)
-        throws IOException {
+            throws IOException {
 
         if (suspended)
             return;
@@ -166,7 +166,7 @@ public final class HttpResponseStream extends ResponseStream {
      * Write the specified byte array.
      */
     public void write(byte[] b, int off, int len)
-        throws IOException {
+            throws IOException {
 
         if (suspended)
             return;
@@ -200,7 +200,7 @@ public final class HttpResponseStream extends ResponseStream {
 
         if (suspended)
             throw new IOException
-                (sm.getString("responseStream.suspended"));
+                    (sm.getString("responseStream.suspended"));
 
         if (!writeContent)
             return;
@@ -229,9 +229,9 @@ public final class HttpResponseStream extends ResponseStream {
             return;
         // Check the basic cases in which we chunk
         useChunking =
-            (!response.isCommitted()
-             && response.getContentLength() == -1
-             && response.getStatus() != HttpServletResponse.SC_NOT_MODIFIED);
+                (!response.isCommitted()
+                        && response.getContentLength() == -1
+                        && response.getStatus() != HttpServletResponse.SC_NOT_MODIFIED);
         if (!response.isChunkingAllowed() && useChunking) {
             // If we should chunk, but chunking is forbidden by the connector,
             // we close the connection
@@ -249,7 +249,7 @@ public final class HttpResponseStream extends ResponseStream {
 
     protected void checkHead(HttpResponseImpl response) {
         HttpServletRequest servletRequest =
-            (HttpServletRequest) response.getRequest();
+                (HttpServletRequest) response.getRequest();
         if ("HEAD".equals(servletRequest.getMethod())) {
             writeContent = false;
         } else {

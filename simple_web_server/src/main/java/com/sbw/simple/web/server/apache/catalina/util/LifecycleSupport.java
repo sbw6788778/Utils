@@ -66,9 +66,8 @@ package com.sbw.simple.web.server.apache.catalina.util;
 
 
 import com.sbw.simple.web.server.apache.catalina.Lifecycle;
-import org.apache.catalina.Lifecycle;
-import org.apache.catalina.LifecycleEvent;
-import org.apache.catalina.LifecycleListener;
+import com.sbw.simple.web.server.apache.catalina.LifecycleEvent;
+import com.sbw.simple.web.server.apache.catalina.LifecycleListener;
 
 
 /**
@@ -90,7 +89,7 @@ public final class LifecycleSupport {
      * Lifecycle component.
      *
      * @param lifecycle The Lifecycle component that will be the source
-     *  of events that we fire
+     *                  of events that we fire
      */
     public LifecycleSupport(Lifecycle lifecycle) {
 
@@ -125,20 +124,20 @@ public final class LifecycleSupport {
      */
     public void addLifecycleListener(LifecycleListener listener) {
 
-      synchronized (listeners) {
-          LifecycleListener results[] =
-            new LifecycleListener[listeners.length + 1];
-          for (int i = 0; i < listeners.length; i++)
-              results[i] = listeners[i];
-          results[listeners.length] = listener;
-          listeners = results;
-      }
+        synchronized (listeners) {
+            LifecycleListener results[] =
+                    new LifecycleListener[listeners.length + 1];
+            for (int i = 0; i < listeners.length; i++)
+                results[i] = listeners[i];
+            results[listeners.length] = listener;
+            listeners = results;
+        }
 
     }
 
 
     /**
-     * Get the lifecycle listeners associated with this lifecycle. If this 
+     * Get the lifecycle listeners associated with this lifecycle. If this
      * Lifecycle has no listeners registered, a zero-length array is returned.
      */
     public LifecycleListener[] findLifecycleListeners() {
@@ -187,7 +186,7 @@ public final class LifecycleSupport {
             if (n < 0)
                 return;
             LifecycleListener results[] =
-              new LifecycleListener[listeners.length - 1];
+                    new LifecycleListener[listeners.length - 1];
             int j = 0;
             for (int i = 0; i < listeners.length; i++) {
                 if (i != n)

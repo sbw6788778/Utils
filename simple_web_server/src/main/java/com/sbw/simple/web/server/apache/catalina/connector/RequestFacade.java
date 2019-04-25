@@ -65,15 +65,14 @@
 package com.sbw.simple.web.server.apache.catalina.connector;
 
 
+import com.sbw.simple.web.server.apache.catalina.Request;
+
+import javax.servlet.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Enumeration;
-import java.util.Map;
 import java.util.Locale;
-import javax.servlet.ServletInputStream;
-import javax.servlet.ServletRequest;
-import javax.servlet.RequestDispatcher;
-import org.apache.catalina.Request;
+import java.util.Map;
 
 
 /**
@@ -86,9 +85,62 @@ import org.apache.catalina.Request;
  */
 
 public class RequestFacade implements ServletRequest {
+    @Override
+    public int getRemotePort() {
+        return 0;
+    }
 
+    @Override
+    public String getLocalName() {
+        return null;
+    }
 
-    // ----------------------------------------------------------- Constructors
+    @Override
+    public String getLocalAddr() {
+        return null;
+    }
+
+    @Override
+    public int getLocalPort() {
+        return 0;
+    }
+
+    @Override
+    public ServletContext getServletContext() {
+        return null;
+    }
+
+    @Override
+    public AsyncContext startAsync() throws IllegalStateException {
+        return null;
+    }
+
+    @Override
+    public AsyncContext startAsync(ServletRequest servletRequest, ServletResponse servletResponse) throws IllegalStateException {
+        return null;
+    }
+
+    @Override
+    public boolean isAsyncStarted() {
+        return false;
+    }
+
+    @Override
+    public boolean isAsyncSupported() {
+        return false;
+    }
+
+    @Override
+    public AsyncContext getAsyncContext() {
+        return null;
+    }
+
+    @Override
+    public DispatcherType getDispatcherType() {
+        return null;
+    }
+
+// ----------------------------------------------------------- Constructors
 
 
     /**
@@ -143,7 +195,7 @@ public class RequestFacade implements ServletRequest {
 
 
     public void setCharacterEncoding(String env)
-        throws java.io.UnsupportedEncodingException {
+            throws java.io.UnsupportedEncodingException {
         request.setCharacterEncoding(env);
     }
 
@@ -159,7 +211,7 @@ public class RequestFacade implements ServletRequest {
 
 
     public ServletInputStream getInputStream()
-        throws IOException {
+            throws IOException {
         return request.getInputStream();
     }
 
@@ -205,7 +257,7 @@ public class RequestFacade implements ServletRequest {
 
 
     public BufferedReader getReader()
-        throws IOException {
+            throws IOException {
         return request.getReader();
     }
 

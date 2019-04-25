@@ -1,12 +1,12 @@
 package com.sbw.simple.web.server.apache.catalina.connector;
 
 
-import java.io.IOException;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Cookie;
-
 import com.sbw.simple.web.server.apache.catalina.HttpResponse;
-import org.apache.catalina.HttpResponse;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Collection;
 
 
 /**
@@ -19,11 +19,39 @@ import org.apache.catalina.HttpResponse;
  */
 
 public final class HttpResponseFacade
-    extends ResponseFacade
-    implements HttpServletResponse {
+        extends ResponseFacade
+        implements HttpServletResponse {
+    @Override
+    public int getStatus() {
+        return 0;
+    }
 
+    @Override
+    public String getHeader(String name) {
+        return null;
+    }
 
-    // ----------------------------------------------------------- Constructors
+    @Override
+    public Collection<String> getHeaders(String name) {
+        return null;
+    }
+
+    @Override
+    public Collection<String> getHeaderNames() {
+        return null;
+    }
+
+    @Override
+    public String getContentType() {
+        return null;
+    }
+
+    @Override
+    public void setCharacterEncoding(String charset) {
+
+    }
+
+// ----------------------------------------------------------- Constructors
 
 
     /**
@@ -75,11 +103,11 @@ public final class HttpResponseFacade
 
 
     public void sendError(int sc, String msg)
-        throws IOException {
+            throws IOException {
 
         if (isCommitted())
             throw new IllegalStateException
-                (/*sm.getString("responseBase.reset.ise")*/);
+                    (/*sm.getString("responseBase.reset.ise")*/);
 
         resp.setAppCommitted(true);
 
@@ -89,11 +117,11 @@ public final class HttpResponseFacade
 
 
     public void sendError(int sc)
-        throws IOException {
+            throws IOException {
 
         if (isCommitted())
             throw new IllegalStateException
-                (/*sm.getString("responseBase.reset.ise")*/);
+                    (/*sm.getString("responseBase.reset.ise")*/);
 
         resp.setAppCommitted(true);
 
@@ -103,11 +131,11 @@ public final class HttpResponseFacade
 
 
     public void sendRedirect(String location)
-        throws IOException {
+            throws IOException {
 
         if (isCommitted())
             throw new IllegalStateException
-                (/*sm.getString("responseBase.reset.ise")*/);
+                    (/*sm.getString("responseBase.reset.ise")*/);
 
         resp.setAppCommitted(true);
 

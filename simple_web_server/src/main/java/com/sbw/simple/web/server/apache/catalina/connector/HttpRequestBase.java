@@ -1,6 +1,13 @@
 package com.sbw.simple.web.server.apache.catalina.connector;
 
 
+import com.sbw.simple.web.server.apache.catalina.*;
+import com.sbw.simple.web.server.apache.catalina.util.Enumerator;
+import com.sbw.simple.web.server.apache.catalina.util.ParameterMap;
+import com.sbw.simple.web.server.apache.catalina.util.RequestUtil;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.AccessController;
@@ -8,27 +15,7 @@ import java.security.Principal;
 import java.security.PrivilegedAction;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletInputStream;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import org.apache.catalina.Globals;
-import org.apache.catalina.HttpRequest;
-import org.apache.catalina.Logger;
-import org.apache.catalina.Manager;
-import org.apache.catalina.Realm;
-import org.apache.catalina.Session;
-import org.apache.catalina.util.Enumerator;
-import org.apache.catalina.util.ParameterMap;
-import org.apache.catalina.util.RequestUtil;
+import java.util.*;
 
 
 /**
@@ -43,12 +30,91 @@ import org.apache.catalina.util.RequestUtil;
  */
 
 public class HttpRequestBase
-    extends RequestBase
-    implements HttpRequest, HttpServletRequest {
+        extends RequestBase
+        implements HttpRequest, HttpServletRequest {
 
+    @Override
+    public boolean authenticate(HttpServletResponse response) throws IOException, ServletException {
+        return false;
+    }
+
+    @Override
+    public void login(String username, String password) throws ServletException {
+
+    }
+
+    @Override
+    public void logout() throws ServletException {
+
+    }
+
+    @Override
+    public Collection<Part> getParts() throws IOException, ServletException {
+        return null;
+    }
+
+    @Override
+    public Part getPart(String name) throws IOException, ServletException {
+        return null;
+    }
+
+    @Override
+    public int getRemotePort() {
+        return 0;
+    }
+
+    @Override
+    public String getLocalName() {
+        return null;
+    }
+
+    @Override
+    public String getLocalAddr() {
+        return null;
+    }
+
+    @Override
+    public int getLocalPort() {
+        return 0;
+    }
+
+    @Override
+    public ServletContext getServletContext() {
+        return null;
+    }
+
+    @Override
+    public AsyncContext startAsync() throws IllegalStateException {
+        return null;
+    }
+
+    @Override
+    public AsyncContext startAsync(ServletRequest servletRequest, ServletResponse servletResponse) throws IllegalStateException {
+        return null;
+    }
+
+    @Override
+    public boolean isAsyncStarted() {
+        return false;
+    }
+
+    @Override
+    public boolean isAsyncSupported() {
+        return false;
+    }
+
+    @Override
+    public AsyncContext getAsyncContext() {
+        return null;
+    }
+
+    @Override
+    public DispatcherType getDispatcherType() {
+        return null;
+    }
 
     protected class PrivilegedGetSession
-        implements PrivilegedAction {
+            implements PrivilegedAction {
 
         private boolean create;
 
@@ -95,9 +161,9 @@ public class HttpRequestBase
      * The set of SimpleDateFormat formats to use in getDateHeader().
      */
     protected SimpleDateFormat formats[] = {
-        new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US),
-        new SimpleDateFormat("EEEEEE, dd-MMM-yy HH:mm:ss zzz", Locale.US),
-        new SimpleDateFormat("EEE MMMM d HH:mm:ss yyyy", Locale.US)
+            new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US),
+            new SimpleDateFormat("EEEEEE, dd-MMM-yy HH:mm:ss zzz", Locale.US),
+            new SimpleDateFormat("EEE MMMM d HH:mm:ss yyyy", Locale.US)
     };
 
 
@@ -118,7 +184,7 @@ public class HttpRequestBase
      * Descriptive information about this HttpRequest implementation.
      */
     protected static final String info =
-        "org.apache.catalina.connector.HttpRequestBase/1.0";
+            "org.apache.catalina.connector.HttpRequestBase/1.0";
 
 
     /**
@@ -260,7 +326,7 @@ public class HttpRequestBase
     /**
      * Add a Header to the set of Headers associated with this Request.
      *
-     * @param name The new header name
+     * @param name  The new header name
      * @param value The new header value
      */
     public void addHeader(String name, String value) {
@@ -283,7 +349,7 @@ public class HttpRequestBase
      * (This is used when restoring the original request on a form based
      * login).
      *
-     * @param name Name of this request parameter
+     * @param name   Name of this request parameter
      * @param values Corresponding values for this request parameter
      */
     public void addParameter(String name, String values[]) {
@@ -581,8 +647,8 @@ public class HttpRequestBase
             contentType = contentType.trim();
         }
         if ("POST".equals(getMethod()) && (getContentLength() > 0)
-            && (this.stream == null)
-            && "application/x-www-form-urlencoded".equals(contentType)) {
+                && (this.stream == null)
+                && "application/x-www-form-urlencoded".equals(contentType)) {
 
             try {
                 int max = getContentLength();
@@ -591,7 +657,7 @@ public class HttpRequestBase
                 ServletInputStream is = getInputStream();
                 while (len < max) {
                     int next = is.read(buf, len, max - len);
-                    if (next < 0 ) {
+                    if (next < 0) {
                         break;
                     }
                     len += next;
@@ -612,12 +678,12 @@ public class HttpRequestBase
                     msg.append(" Read: ");
                     msg.append(len);
                     msg.append("\n  Bytes Read: ");
-                    if ( len > 0 ) {
-                        msg.append(new String(buf,0,len));
+                    if (len > 0) {
+                        msg.append(new String(buf, 0, len));
                     }
                     log(msg.toString());
                     throw new RuntimeException
-                        (sm.getString("httpRequestBase.contentLengthMismatch"));
+                            (sm.getString("httpRequestBase.contentLengthMismatch"));
                 }
                 RequestUtil.parseParameters(results, buf, encoding);
             } catch (UnsupportedEncodingException ue) {
@@ -625,7 +691,7 @@ public class HttpRequestBase
             } catch (IOException e) {
                 throw new RuntimeException
                         (sm.getString("httpRequestBase.contentReadFail") +
-                         e.getMessage());
+                                e.getMessage());
             }
         }
 
@@ -666,7 +732,7 @@ public class HttpRequestBase
      * or posted form data.
      *
      * @return A <code>Map</code> containing parameter names as keys
-     *  and parameter values as map values.
+     * and parameter values as map values.
      */
     public Map getParameterMap() {
 
@@ -731,7 +797,7 @@ public class HttpRequestBase
         String relative = null;
         if (pos >= 0) {
             relative = RequestUtil.normalize
-                (servletPath.substring(0, pos + 1) + path);
+                    (servletPath.substring(0, pos + 1) + path);
         } else {
             relative = RequestUtil.normalize(servletPath + path);
         }
@@ -795,9 +861,8 @@ public class HttpRequestBase
      * return -1.
      *
      * @param name Name of the requested date header
-     *
-     * @exception IllegalArgumentException if the specified header value
-     *  cannot be converted to a date
+     * @throws IllegalArgumentException if the specified header value
+     *                                  cannot be converted to a date
      */
     public long getDateHeader(String name) {
 
@@ -880,9 +945,8 @@ public class HttpRequestBase
      * is no such header for this request.
      *
      * @param name Name of the requested header
-     *
-     * @exception IllegalArgumentException if the specified header value
-     *  cannot be converted to an integer
+     * @throws IllegalArgumentException if the specified header value
+     *                                  cannot be converted to an integer
      */
     public int getIntHeader(String name) {
 
@@ -1015,7 +1079,7 @@ public class HttpRequestBase
      * for reporting errors.
      *
      * @return A <code>StringBuffer</code> object containing the
-     *  reconstructed URL
+     * reconstructed URL
      */
     public StringBuffer getRequestURL() {
 
@@ -1029,7 +1093,7 @@ public class HttpRequestBase
         url.append("://");
         url.append(getServerName());
         if ((scheme.equals("http") && (port != 80))
-            || (scheme.equals("https") && (port != 443))) {
+                || (scheme.equals("https") && (port != 443))) {
             url.append(':');
             url.append(port);
         }
@@ -1069,9 +1133,9 @@ public class HttpRequestBase
      * @param create Create a new session if one does not exist
      */
     public HttpSession getSession(boolean create) {
-        if( System.getSecurityManager() != null ) {
+        if (System.getSecurityManager() != null) {
             PrivilegedGetSession dp = new PrivilegedGetSession(create);
-            return (HttpSession)AccessController.doPrivileged(dp);
+            return (HttpSession) AccessController.doPrivileged(dp);
         }
         return doGetSession(create);
     }
@@ -1113,10 +1177,10 @@ public class HttpRequestBase
         if (!create)
             return (null);
         if ((context != null) && (response != null) &&
-            context.getCookies() &&
-            response.getResponse().isCommitted()) {
+                context.getCookies() &&
+                response.getResponse().isCommitted()) {
             throw new IllegalStateException
-              (sm.getString("httpRequestBase.createCommitted"));
+                    (sm.getString("httpRequestBase.createCommitted"));
         }
 
         session = manager.createSession();
@@ -1161,7 +1225,7 @@ public class HttpRequestBase
      * request came from the request URI.
      *
      * @deprecated As of Version 2.1 of the Java Servlet API, use
-     *  <code>isRequestedSessionIdFromURL()</code> instead.
+     * <code>isRequestedSessionIdFromURL()</code> instead.
      */
     public boolean isRequestedSessionIdFromUrl() {
 
@@ -1220,7 +1284,7 @@ public class HttpRequestBase
         if (wrapper != null) {
             String realRole = wrapper.findSecurityReference(role);
             if ((realRole != null) &&
-                realm.hasRole(userPrincipal, realRole))
+                    realm.hasRole(userPrincipal, realRole))
                 return (true);
         }
 

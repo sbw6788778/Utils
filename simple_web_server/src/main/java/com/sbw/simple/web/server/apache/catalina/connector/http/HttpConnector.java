@@ -2,10 +2,10 @@ package com.sbw.simple.web.server.apache.catalina.connector.http;
 
 
 import com.sbw.simple.web.server.apache.catalina.*;
+import com.sbw.simple.web.server.apache.catalina.net.DefaultServerSocketFactory;
 import com.sbw.simple.web.server.apache.catalina.net.ServerSocketFactory;
 import com.sbw.simple.web.server.apache.catalina.util.LifecycleSupport;
 import com.sbw.simple.web.server.apache.catalina.util.StringManager;
-import org.apache.catalina.net.DefaultServerSocketFactory;
 
 import java.io.IOException;
 import java.net.BindException;
@@ -30,10 +30,7 @@ import java.util.Vector;
 
 public final class HttpConnector
         implements Connector, Lifecycle, Runnable {
-    @Override
-    public void addLifecycleListener(LifecycleListener listener) {
 
-    }
 
 // ----------------------------------------------------- Instance Variables
 

@@ -1,12 +1,14 @@
 package com.sbw.simple.web.server.apache.catalina.connector;
 
 
+import com.sbw.simple.web.server.apache.catalina.HttpRequest;
+import com.sbw.simple.web.server.apache.catalina.session.StandardSessionFacade;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.*;
+import java.io.IOException;
+import java.util.Collection;
 import java.util.Enumeration;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpSession;
-import org.apache.catalina.HttpRequest;
-import org.apache.catalina.session.StandardSessionFacade;
 
 
 /**
@@ -18,11 +20,34 @@ import org.apache.catalina.session.StandardSessionFacade;
  */
 
 public final class HttpRequestFacade
-    extends RequestFacade
-    implements HttpServletRequest {
+        extends RequestFacade
+        implements HttpServletRequest {
+    @Override
+    public boolean authenticate(HttpServletResponse response) throws IOException, ServletException {
+        return false;
+    }
 
+    @Override
+    public void login(String username, String password) throws ServletException {
 
-    // ----------------------------------------------------------- Constructors
+    }
+
+    @Override
+    public void logout() throws ServletException {
+
+    }
+
+    @Override
+    public Collection<Part> getParts() throws IOException, ServletException {
+        return null;
+    }
+
+    @Override
+    public Part getPart(String name) throws IOException, ServletException {
+        return null;
+    }
+
+// ----------------------------------------------------------- Constructors
 
 
     /**
@@ -135,7 +160,7 @@ public final class HttpRequestFacade
 
     public HttpSession getSession(boolean create) {
         HttpSession session =
-            ((HttpServletRequest) request).getSession(create);
+                ((HttpServletRequest) request).getSession(create);
         if (session == null)
             return null;
         else
