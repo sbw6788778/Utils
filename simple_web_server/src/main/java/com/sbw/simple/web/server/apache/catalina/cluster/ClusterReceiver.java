@@ -63,7 +63,8 @@
 
 package com.sbw.simple.web.server.apache.catalina.cluster;
 
-import org.apache.catalina.Logger;
+
+import com.sbw.simple.web.server.apache.catalina.Logger;
 
 /**
  * This class is responsible for Receiving incoming packets in a Cluster.

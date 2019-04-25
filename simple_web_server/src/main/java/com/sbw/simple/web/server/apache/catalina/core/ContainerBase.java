@@ -76,6 +76,8 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import javax.servlet.ServletException;
 import javax.naming.directory.DirContext;
+
+import com.sbw.simple.web.server.apache.catalina.Container;
 import org.apache.naming.resources.ProxyDirContext;
 import org.apache.catalina.Cluster;
 import org.apache.catalina.Container;
